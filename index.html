@@ -20,11 +20,16 @@
   <header class="bg-black py-6 border-b border-zinc-800">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
       <h1 class="text-3xl font-bold tracking-tighter">FLIPVIBE</h1>
-      <nav class="flex gap-8 text-lg">
-        <a href="#" class="hover:text-emerald-400">Accueil</a>
-        <a href="#produits" class="hover:text-emerald-400">Boutique</a>
-        <a href="#contact" class="hover:text-emerald-400">Contact</a>
-      </nav>
+      <div class="flex items-center gap-8">
+        <nav class="flex gap-8 text-lg">
+          <a href="#" class="hover:text-emerald-400">Accueil</a>
+          <a href="#produits" class="hover:text-emerald-400">Boutique</a>
+        </nav>
+        <button onclick="showCart()" class="flex items-center gap-2 hover:text-emerald-400 relative">
+          <span class="text-2xl">🛒</span>
+          <span id="cart-count" class="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -32,7 +37,6 @@
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-6xl font-bold mb-4">Seconde main qui claque 🔥</h2>
       <p class="text-2xl text-emerald-400 mb-8">Tenues femme tendance • Polos Ralph Lauren • Vestes Nike</p>
-      <a href="#produits" class="inline-block bg-emerald-500 hover:bg-emerald-600 px-10 py-4 rounded-2xl text-xl font-semibold">Voir les articles →</a>
     </div>
   </section>
 
@@ -49,23 +53,25 @@
           </h3>
           <p class="text-emerald-400 text-2xl mt-2">29,99 €</p>
           <p class="text-zinc-400 text-sm mt-1">S, M, L, XL, XXL - Neuf</p>
+          <button onclick="addToCart(); event.stopImmediatePropagation();" 
+                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Ajouter au panier</button>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- MODAL -->
+  <!-- MODAL ARTICLE -->
   <div id="productModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 modal">
     <div class="bg-zinc-900 max-w-4xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
       <div class="p-6 overflow-auto flex-1">
-        <div class="flex justify-between items-center mb-6 sticky top-0 bg-zinc-900">
+        <div class="flex justify-between items-center mb-6">
           <h2 class="text-3xl font-bold">Ensemble élégant femme</h2>
-          <button onclick="closeModal()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
+          <button onclick="closeProductModal()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
         </div>
 
         <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
-             class="w-full max-h-[55vh] object-contain rounded-2xl mb-6 mx-auto block" alt="Ensemble femme">
+             class="w-full max-h-[55vh] object-contain rounded-2xl mb-6" alt="Ensemble femme">
 
         <div class="grid grid-cols-6 gap-3">
           <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" class="thumbnail w-full h-24 object-cover rounded-xl cursor-pointer border-2 border-emerald-500">
@@ -88,11 +94,36 @@
       </div>
 
       <div class="p-6 border-t border-zinc-700">
-        <a href="https://wa.me/32488491418?text=Bonjour%20!%20Je%20suis%20intéressé%20par%20l%27ensemble%20élégant%20femme%20à%2029,99%E2%82%AC" 
-           target="_blank"
-           class="block text-center bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
-          📱 Commander sur WhatsApp
-        </a>
+        <button onclick="addToCartFromModal()" 
+                class="w-full bg-white text-black py-5 rounded-3xl text-2xl font-bold">
+          Ajouter au panier
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PANIER -->
+  <div id="cartModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 modal">
+    <div class="bg-zinc-900 max-w-2xl w-full mx-4 rounded-3xl overflow-hidden">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold">Votre panier</h2>
+          <button onclick="closeCart()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
+        </div>
+
+        <div id="cart-items" class="space-y-4 min-h-[200px]"></div>
+
+        <div class="border-t border-zinc-700 pt-6 mt-6">
+          <div class="flex justify-between text-2xl">
+            <span class="font-semibold">Total</span>
+            <span id="cart-total" class="text-emerald-400 font-bold">0,00 €</span>
+          </div>
+        </div>
+
+        <button onclick="orderViaWhatsApp()" 
+                class="w-full mt-8 bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
+          Commander tout via WhatsApp
+        </button>
       </div>
     </div>
   </div>
@@ -112,11 +143,104 @@
   </footer>
 
   <script>
+    let cart = [];
+
+    const product = {
+      id: 1,
+      name: "Ensemble élégant femme - Haut + Pantalon large",
+      price: 29.99,
+      image: "https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg"
+    };
+
+    function addToCart() {
+      const existing = cart.find(item => item.id === product.id);
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({...product, quantity: 1});
+      }
+      updateCartCount();
+      alert("✅ Article ajouté au panier !");
+    }
+
+    function addToCartFromModal() {
+      addToCart();
+      closeProductModal();
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      document.getElementById('cart-count').textContent = count;
+    }
+
+    function showCart() {
+      const cartContainer = document.getElementById('cart-items');
+      cartContainer.innerHTML = '';
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = `<p class="text-center text-zinc-400 py-12">Votre panier est vide</p>`;
+      } else {
+        cart.forEach((item, index) => {
+          const qty = item.quantity || 1;
+          cartContainer.innerHTML += `
+            <div class="flex gap-4 bg-zinc-800 p-4 rounded-2xl">
+              <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl">
+              <div class="flex-1">
+                <h4 class="font-semibold">${item.name}</h4>
+                <p class="text-emerald-400">${item.price.toFixed(2)} € × ${qty}</p>
+              </div>
+              <div class="text-right">
+                <p class="font-bold">${(item.price * qty).toFixed(2)} €</p>
+                <button onclick="removeFromCart(${index})" class="text-red-500 text-sm mt-2">Supprimer</button>
+              </div>
+            </div>`;
+        });
+      }
+
+      const total = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+      document.getElementById('cart-total').textContent = total.toFixed(2) + " €";
+
+      document.getElementById('cartModal').classList.remove('hidden');
+      document.getElementById('cartModal').classList.add('flex');
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      showCart();
+      updateCartCount();
+    }
+
+    function closeCart() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function orderViaWhatsApp() {
+      if (cart.length === 0) return;
+
+      let message = "Bonjour ! Je voudrais commander via FlipVibe :\n\n";
+      let total = 0;
+
+      cart.forEach(item => {
+        const qty = item.quantity || 1;
+        message += `• ${qty}× ${item.name} - ${item.price.toFixed(2)} €\n`;
+        total += item.price * qty;
+      });
+
+      message += `\nTotal : ${total.toFixed(2)} €\n\nMerci !`;
+
+      const whatsappUrl = `https://wa.me/32488491418?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      closeCart();
+    }
+
+    // Modal produit
     function showProductDetail() {
       document.getElementById('productModal').classList.remove('hidden');
       document.getElementById('productModal').classList.add('flex');
     }
-    function closeModal() {
+    function closeProductModal() {
       const modal = document.getElementById('productModal');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
@@ -124,8 +248,13 @@
     function changeImage(thumb) {
       document.getElementById('mainImage').src = thumb.src;
     }
+
+    // Fermer modals en cliquant dehors
     document.getElementById('productModal').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
+      if (e.target === this) closeProductModal();
+    });
+    document.getElementById('cartModal').addEventListener('click', function(e) {
+      if (e.target === this) closeCart();
     });
   </script>
 </body>
