@@ -74,17 +74,35 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 </div>
 </div>
 
-<div class="mt-10 flex justify-between items-end">
-<div>
-<p class="font-medium text-slate-600 mb-3">Choisissez votre couleur :</p>
-<div class="flex gap-4">
-<button onclick="selectColor(this, 'Kaki')" class="color-btn flex-1 py-5 text-lg font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟫 Kaki</button>
-<button onclick="selectColor(this, 'Vert Olive')" class="color-btn flex-1 py-5 text-lg font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟩 Vert Olive</button>
+<div class="mt-10 grid grid-cols-2 gap-8">
+  <!-- Taille -->
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-2">Taille</label>
+    <select id="sizeSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+      <option value="">Choisir une taille</option>
+      <option value="S">S</option>
+      <option value="M">M</option>
+      <option value="L">L</option>
+      <option value="XL">XL</option>
+      <option value="XXL">XXL</option>
+    </select>
+  </div>
+
+  <!-- Couleur -->
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-2">Couleur</label>
+    <select id="colorSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+      <option value="">Choisir une couleur</option>
+      <option value="Kaki">🟫 Kaki</option>
+      <option value="Vert Olive">🟩 Vert Olive</option>
+    </select>
+  </div>
 </div>
-</div>
+
+<div class="mt-8 flex justify-between items-end">
 <div class="text-right">
 <p class="text-5xl font-bold text-emerald-600">29,99 €</p>
-<p class="text-slate-500">S, M, L, XL, XXL • Neuf</p>
+<p class="text-slate-500">Neuf</p>
 </div>
 </div>
 </div>
@@ -105,23 +123,21 @@ Ajouter au panier
 
 <script>
 let cart = [];
-let selectedColor = null;
-
-function selectColor(btn, color) {
-  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
-  btn.classList.add('border-emerald-500', 'bg-emerald-50');
-  selectedColor = color;
-}
 
 function addToCartFromModal() {
-  if (!selectedColor) { alert("❌ Veuillez choisir une couleur"); return; }
-  alert("✅ Article ajouté au panier !");
+  const size = document.getElementById('sizeSelect').value;
+  const color = document.getElementById('colorSelect').value;
+  if (!size || !color) {
+    alert("❌ Veuillez choisir une taille et une couleur");
+    return;
+  }
+  alert(`✅ Ajouté au panier !\nTaille: ${size} | Couleur: ${color}`);
   closeProductModal();
 }
 
 function showProductDetail() {
-  selectedColor = null;
-  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
+  document.getElementById('sizeSelect').value = "";
+  document.getElementById('colorSelect').value = "";
   document.getElementById('productModal').classList.remove('hidden');
   document.getElementById('productModal').classList.add('flex');
 }
