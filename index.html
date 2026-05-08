@@ -10,10 +10,12 @@
     .product-card { transition: all 0.3s; }
     .product-card:hover { transform: scale(1.05); }
     .product-img { width: 100%; height: 256px; object-fit: cover; }
+    .modal { animation: fadeIn 0.3s; }
   </style>
 </head>
 <body class="bg-zinc-950 text-white">
 
+  <!-- HEADER -->
   <header class="bg-black py-6 border-b border-zinc-800">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
       <h1 class="text-3xl font-bold tracking-tighter">FLIPVIBE</h1>
@@ -25,49 +27,73 @@
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="py-24 bg-gradient-to-r from-zinc-900 to-black text-center">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-6xl font-bold mb-4">Seconde main qui claque 🔥</h2>
-      <p class="text-2xl text-emerald-400 mb-8">Polos Ralph Lauren • Vestes Nike • Tenues femme tendance<br>Pièces sélectionnées et flipées par moi (Belgique)</p>
+      <p class="text-2xl text-emerald-400 mb-8">Polos Ralph Lauren • Vestes Nike • Tenues femme tendance</p>
       <a href="#produits" class="inline-block bg-emerald-500 hover:bg-emerald-600 px-10 py-4 rounded-2xl text-xl font-semibold">Voir les articles →</a>
     </div>
   </section>
 
+  <!-- PRODUITS -->
   <section id="produits" class="py-16 max-w-6xl mx-auto px-6">
     <h2 class="text-4xl font-bold mb-10 text-center">Articles en vente</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 
-      <!-- TENUE FEMME AVEC VRAIE IMAGE -->
+      <!-- TENUE FEMME -->
       <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
         <img src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
              class="product-img" alt="Ensemble élégant femme">
         <div class="p-6">
           <h3 class="font-semibold text-xl">Ensemble élégant femme - Haut + Pantalon large</h3>
           <p class="text-emerald-400 text-2xl mt-2">39,99 €</p>
-          <p class="text-zinc-400 text-sm mt-1">S, M, L, XL, XXL - Neuf (Temu)</p>
-          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" 
-                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
-        </div>
-      </div>
-
-      <!-- Tu peux garder ou supprimer cet exemple -->
-      <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
-        <div class="h-64 bg-zinc-800 flex items-center justify-center text-7xl">👕</div>
-        <div class="p-6">
-          <h3 class="font-semibold text-xl">Polo Ralph Lauren bleu marine</h3>
-          <p class="text-emerald-400 text-2xl mt-2">35 €</p>
-          <p class="text-zinc-400 text-sm mt-1">Taille M - Excellent état</p>
-          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" 
-                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
+          <p class="text-zinc-400 text-sm mt-1">S, M, L, XL, XXL - Neuf</p>
+          <button onclick="showProductDetail()" 
+                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Voir l'article</button>
         </div>
       </div>
 
     </div>
   </section>
 
+  <!-- MODAL DÉTAIL ARTICLE -->
+  <div id="productModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 modal">
+    <div class="bg-zinc-900 max-w-3xl w-full mx-4 rounded-3xl overflow-hidden">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold">Ensemble élégant femme</h2>
+          <button onclick="closeModal()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
+        </div>
+
+        <!-- Photos -->
+        <img id="modalMainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
+             class="w-full rounded-2xl mb-6" alt="Ensemble femme">
+
+        <!-- Description -->
+        <div class="space-y-4">
+          <p class="text-emerald-400 text-3xl font-semibold">39,99 €</p>
+          <p class="text-zinc-300 text-lg">
+            Superbe ensemble élégant composé d’un haut sans manches et d’un pantalon large à motifs feuilles.<br>
+            Style chic et confortable, parfait pour le printemps/été.<br>
+            <strong>Tailles disponibles :</strong> S, M, L, XL, XXL<br>
+            <strong>État :</strong> Neuf (commandé sur Temu)
+          </p>
+        </div>
+
+        <!-- Bouton WhatsApp dans le modal -->
+        <a href="https://wa.me/32488491418?text=Bonjour%20!%20Je%20suis%20intéressé%20par%20l%27ensemble%20élégant%20femme%20à%2039,99%E2%82%AC"
+           target="_blank"
+           class="block mt-8 text-center bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
+          📱 Commander sur WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT RAPIDE -->
   <section id="contact" class="py-16 bg-black text-center">
     <h2 class="text-4xl font-bold mb-8">Prêt à acheter ?</h2>
-    <p class="text-xl mb-8">Contacte-moi directement :</p>
     <a href="https://wa.me/32488491418" target="_blank" 
        class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 px-12 py-5 rounded-3xl text-2xl font-bold text-white mx-auto">
       📱 WhatsApp
@@ -80,5 +106,20 @@
     Créé avec ❤️ par Grok
   </footer>
 
+  <script>
+    function showProductDetail() {
+      document.getElementById('productModal').classList.remove('hidden');
+      document.getElementById('productModal').classList.add('flex');
+    }
+    function closeModal() {
+      const modal = document.getElementById('productModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+    // Fermer le modal en cliquant en dehors
+    document.getElementById('productModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
 </body>
 </html>
