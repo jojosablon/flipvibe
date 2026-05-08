@@ -13,6 +13,8 @@
     .modal { animation: fadeIn 0.3s; }
     .thumbnail { transition: all 0.2s; }
     .thumbnail:hover { transform: scale(1.1); border-color: #10b981; }
+    .color-btn { transition: all 0.2s; }
+    .color-btn.active { border-color: #10b981; transform: scale(1.08); }
   </style>
 </head>
 <body class="bg-zinc-950 text-white">
@@ -47,7 +49,6 @@
       <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
         <img src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
              class="product-img" onclick="showProductDetail()" alt="Ensemble élégant femme">
-        
         <div class="p-6">
           <h3 onclick="showProductDetail()" class="font-semibold text-xl cursor-pointer hover:text-emerald-400">
             Ensemble élégant femme - Haut + Pantalon large
@@ -72,7 +73,7 @@
         <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
              class="w-full max-h-[55vh] object-contain rounded-2xl mb-6" alt="Ensemble femme">
 
-        <div class="grid grid-cols-6 gap-3">
+        <div class="grid grid-cols-6 gap-3 mb-8">
           <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" class="thumbnail w-full h-24 object-cover rounded-xl cursor-pointer border-2 border-emerald-500">
           <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" class="thumbnail w-full h-24 object-cover rounded-xl cursor-pointer">
           <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" class="thumbnail w-full h-24 object-cover rounded-xl cursor-pointer">
@@ -81,7 +82,22 @@
           <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" class="thumbnail w-full h-24 object-cover rounded-xl cursor-pointer">
         </div>
 
-        <div class="mt-8 space-y-4">
+        <!-- CHOIX DE COULEUR -->
+        <div class="mb-8">
+          <p class="text-zinc-400 mb-3 font-medium">Choisissez votre couleur :</p>
+          <div class="flex gap-4">
+            <button onclick="selectColor(this, 'Kaki')" 
+                    class="color-btn flex-1 py-4 px-6 border-2 border-zinc-600 rounded-2xl text-lg font-semibold hover:border-emerald-400">
+              🟫 Kaki
+            </button>
+            <button onclick="selectColor(this, 'Vert Olive')" 
+                    class="color-btn flex-1 py-4 px-6 border-2 border-zinc-600 rounded-2xl text-lg font-semibold hover:border-emerald-400">
+              🟩 Vert Olive
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-4">
           <p class="text-emerald-400 text-3xl font-semibold">29,99 €</p>
           <p class="text-zinc-300 text-lg">
             Ensemble chic et confortable : haut sans manches + pantalon large à motifs feuilles.<br>
@@ -92,9 +108,8 @@
         </div>
       </div>
 
-      <!-- Bouton Ajouter au panier UNIQUEMENT ici -->
       <div class="p-6 border-t border-zinc-700">
-        <button onclick="addToCartFromModal()" 
+        <button onclick="addToCartFromModal()" id="addToCartBtn"
                 class="w-full bg-white text-black py-5 rounded-3xl text-2xl font-bold">
           Ajouter au panier
         </button>
@@ -102,7 +117,7 @@
     </div>
   </div>
 
-  <!-- PANIER -->
+  <!-- PANIER (inchangé) -->
   <div id="cartModal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 modal">
     <div class="bg-zinc-900 max-w-2xl w-full mx-4 rounded-3xl overflow-hidden">
       <div class="p-6">
@@ -120,8 +135,7 @@
           </div>
         </div>
 
-        <button onclick="orderViaWhatsApp()" 
-                class="w-full mt-8 bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
+        <button onclick="orderViaWhatsApp()" class="w-full mt-8 bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
           Commander tout via WhatsApp
         </button>
       </div>
@@ -130,8 +144,7 @@
 
   <section id="contact" class="py-16 bg-black text-center">
     <h2 class="text-4xl font-bold mb-8">Prêt à acheter ?</h2>
-    <a href="https://wa.me/32488491418" target="_blank" 
-       class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 px-12 py-5 rounded-3xl text-2xl font-bold text-white mx-auto">
+    <a href="https://wa.me/32488491418" target="_blank" class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 px-12 py-5 rounded-3xl text-2xl font-bold text-white mx-auto">
       📱 WhatsApp
     </a>
     <p class="text-zinc-400 mt-4">+32 488 49 14 18</p>
@@ -144,6 +157,7 @@
 
   <script>
     let cart = [];
+    let selectedColor = null;
 
     const product = {
       id: 1,
@@ -152,14 +166,27 @@
       image: "https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg"
     };
 
+    function selectColor(btn, color) {
+      // Désélectionne tous les boutons
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active', 'border-emerald-500'));
+      // Sélectionne le bouton cliqué
+      btn.classList.add('active', 'border-emerald-500');
+      selectedColor = color;
+    }
+
     function addToCart() {
-      const existing = cart.find(item => item.id === product.id);
-      if (existing) {
-        existing.quantity = (existing.quantity || 1) + 1;
-      } else {
-        cart.push({...product, quantity: 1});
+      if (!selectedColor) {
+        alert("❌ Veuillez choisir une couleur (Vert Olive ou Kaki)");
+        return;
       }
+      const item = {
+        ...product,
+        color: selectedColor,
+        quantity: 1
+      };
+      cart.push(item);
       updateCartCount();
+      selectedColor = null; // reset
     }
 
     function addToCartFromModal() {
@@ -173,6 +200,7 @@
       document.getElementById('cart-count').textContent = count;
     }
 
+    // Le reste du code panier reste identique (showCart, orderViaWhatsApp, etc.)
     function showCart() {
       const cartContainer = document.getElementById('cart-items');
       cartContainer.innerHTML = '';
@@ -187,7 +215,7 @@
               <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl">
               <div class="flex-1">
                 <h4 class="font-semibold">${item.name}</h4>
-                <p class="text-emerald-400">${item.price.toFixed(2)} € × ${qty}</p>
+                <p class="text-emerald-400">${item.color} • ${item.price.toFixed(2)} € × ${qty}</p>
               </div>
               <div class="text-right">
                 <p class="font-bold">${(item.price * qty).toFixed(2)} €</p>
@@ -222,7 +250,7 @@
       let total = 0;
       cart.forEach(item => {
         const qty = item.quantity || 1;
-        message += `• ${qty}× ${item.name} - ${item.price.toFixed(2)} €\n`;
+        message += `• ${qty}× ${item.name} (${item.color}) - ${item.price.toFixed(2)} €\n`;
         total += item.price * qty;
       });
       message += `\nTotal : ${total.toFixed(2)} €\n\nMerci !`;
@@ -232,14 +260,18 @@
     }
 
     function showProductDetail() {
+      selectedColor = null; // reset couleur à chaque ouverture
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active', 'border-emerald-500'));
       document.getElementById('productModal').classList.remove('hidden');
       document.getElementById('productModal').classList.add('flex');
     }
+
     function closeProductModal() {
       const modal = document.getElementById('productModal');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
+
     function changeImage(thumb) {
       document.getElementById('mainImage').src = thumb.src;
     }
