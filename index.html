@@ -68,9 +68,9 @@
           <button onclick="closeModal()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
         </div>
 
-        <!-- Image principale -->
+        <!-- Image principale REDIMENSIONNÉE -->
         <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
-             class="w-full rounded-2xl mb-6" alt="Ensemble femme">
+             class="w-full max-h-[520px] object-contain rounded-2xl mb-6 mx-auto block" alt="Ensemble femme">
 
         <!-- Galerie des 6 photos -->
         <div class="grid grid-cols-6 gap-3">
@@ -99,7 +99,6 @@
           </p>
         </div>
 
-        <!-- Bouton WhatsApp -->
         <a href="https://wa.me/32488491418?text=Bonjour%20!%20Je%20suis%20intéressé%20par%20l%27ensemble%20élégant%20femme%20à%2039,99%E2%82%AC"
            target="_blank"
            class="block mt-8 text-center bg-green-500 hover:bg-green-600 py-5 rounded-3xl text-2xl font-bold">
