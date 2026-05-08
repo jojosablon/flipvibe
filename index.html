@@ -23,7 +23,7 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <a href="#" class="hover:text-emerald-600">Accueil</a>
 <a href="#produits" class="hover:text-emerald-600">Boutique</a>
 </nav>
-<button onclick="showCart()" class="flex items-center gap-2 text-xl hover:text-emerald-600 relative">🛒<span id="cart-count" class="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span></button>
+<button onclick="showCart()" class="flex items-center gap-2 text-xl hover:text-emerald-600 relative">🛒 <span id="cart-count" class="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span></button>
 </div>
 </header>
 
@@ -63,7 +63,6 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <div class="flex-1">
 <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" class="w-full max-h-[480px] object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
 </div>
-
 <div class="flex flex-col gap-1 w-12">
 <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
 <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
@@ -75,35 +74,29 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 </div>
 
 <div class="mt-10 grid grid-cols-2 gap-8">
-  <!-- Taille -->
-  <div>
-    <label class="block text-sm font-medium text-slate-600 mb-2">Taille</label>
-    <select id="sizeSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
-      <option value="">Choisir une taille</option>
-      <option value="S">S</option>
-      <option value="M">M</option>
-      <option value="L">L</option>
-      <option value="XL">XL</option>
-      <option value="XXL">XXL</option>
-    </select>
-  </div>
-
-  <!-- Couleur -->
-  <div>
-    <label class="block text-sm font-medium text-slate-600 mb-2">Couleur</label>
-    <select id="colorSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
-      <option value="">Choisir une couleur</option>
-      <option value="Kaki">🟫 Kaki</option>
-      <option value="Vert Olive">🟩 Vert Olive</option>
-    </select>
-  </div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-2">Taille</label>
+<select id="sizeSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+<option value="">Choisir une taille</option>
+<option value="S">S</option>
+<option value="M">M</option>
+<option value="L">L</option>
+<option value="XL">XL</option>
+<option value="XXL">XXL</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-2">Couleur</label>
+<select id="colorSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+<option value="">Choisir une couleur</option>
+<option value="Kaki">🟫 Kaki</option>
+<option value="Vert Olive">🟩 Vert Olive</option>
+</select>
+</div>
 </div>
 
-<div class="mt-8 flex justify-between items-end">
-<div class="text-right">
+<div class="mt-8 text-right">
 <p class="text-5xl font-bold text-emerald-600">29,99 €</p>
-<p class="text-slate-500">Neuf</p>
-</div>
 </div>
 </div>
 
@@ -131,6 +124,8 @@ function addToCartFromModal() {
     alert("❌ Veuillez choisir une taille et une couleur");
     return;
   }
+  cart.push({name: "Ensemble élégant femme", price: 29.99, size: size, color: color});
+  document.getElementById('cart-count').textContent = cart.length;
   alert(`✅ Ajouté au panier !\nTaille: ${size} | Couleur: ${color}`);
   closeProductModal();
 }
@@ -154,6 +149,10 @@ function changeImage(thumb) {
 document.getElementById('productModal').addEventListener('click', function(e) {
   if (e.target === this) closeProductModal();
 });
+
+function showCart() {
+  alert("Panier : " + cart.length + " article(s)\n\nFonctionnalité complète bientôt.");
+}
 </script>
 </body>
 </html>
