@@ -24,47 +24,13 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <a href="#produits" class="hover:text-emerald-600">Boutique</a>
 </nav>
 <div class="flex items-center gap-4">
-<button onclick="showRegisterModal()" class="px-6 py-2.5 text-emerald-600 font-medium hover:bg-emerald-50 rounded-3xl">Créer un compte</button>
-<button onclick="showCart()" class="flex items-center gap-2 text-xl hover:text-emerald-600 relative">🛒 <span id="cart-count" class="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span></button>
+<button onclick="showLoginModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
+<button onclick="showRegisterModal()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
 </div>
 </div>
 </header>
 
-<!-- REGISTER MODAL -->
-<div id="registerModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden">
-<div class="p-8">
-<h2 class="text-3xl font-bold mb-8 text-center">Créer un compte</h2>
-
-<div class="space-y-6">
-<div>
-<label class="block text-sm font-medium mb-2">Prénom</label>
-<input id="prenom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500" placeholder="Votre prénom">
-</div>
-<div>
-<label class="block text-sm font-medium mb-2">Nom</label>
-<input id="nom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500" placeholder="Votre nom">
-</div>
-<div>
-<label class="block text-sm font-medium mb-2">Adresse email</label>
-<input id="email" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500" placeholder="exemple@email.com">
-</div>
-<div>
-<label class="block text-sm font-medium mb-2">Mot de passe</label>
-<input id="password" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500" placeholder="••••••••">
-</div>
-</div>
-
-<button onclick="createAccount()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">
-Créer mon compte
-</button>
-
-<p onclick="closeRegisterModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
-</div>
-</div>
-</div>
-
-<!-- Le reste du site (produits + modal article) reste identique -->
+<!-- PRODUCT CARD -->
 <section id="produits" class="py-20 max-w-7xl mx-auto px-8">
 <h2 class="text-4xl font-bold mb-12 text-center">Nos articles en vente</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -79,45 +45,169 @@ Créer mon compte
 </div>
 </section>
 
-<!-- Modal article (inchangé) -->
+<!-- PRODUCT MODAL -->
 <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
-<!-- ... (modal article avec taille et couleur en menu déroulant) ... -->
+<div class="bg-white max-w-6xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
+<div class="p-8 flex-1 overflow-auto">
+<div class="flex justify-between items-start mb-6">
+<h2 class="text-4xl font-bold">Ensemble élégant femme</h2>
+<button onclick="closeProductModal()" class="text-5xl text-slate-300 hover:text-slate-500">×</button>
+</div>
+
+<div class="flex gap-8">
+<div class="flex-1">
+<img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" class="w-full max-h-[480px] object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
+</div>
+<div class="flex flex-col gap-1 w-12">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-1.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-2.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+<img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" class="thumbnail w-12 h-12 object-cover rounded-xl cursor-pointer border-2 border-transparent">
+</div>
+</div>
+
+<div class="mt-10 grid grid-cols-2 gap-8">
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-2">Taille</label>
+<select id="sizeSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+<option value="">Choisir une taille</option>
+<option value="S">S</option>
+<option value="M">M</option>
+<option value="L">L</option>
+<option value="XL">XL</option>
+<option value="XXL">XXL</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-600 mb-2">Couleur</label>
+<select id="colorSelect" class="w-full px-5 py-4 border border-slate-300 rounded-3xl text-lg focus:outline-none focus:border-emerald-500">
+<option value="">Choisir une couleur</option>
+<option value="Kaki">🟫 Kaki</option>
+<option value="Vert Olive">🟩 Vert Olive</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="p-8 border-t">
+<button onclick="addToCartFromModal()" class="w-full bg-emerald-600 text-white py-7 rounded-3xl text-2xl font-semibold hover:bg-emerald-700">
+Ajouter au panier
+</button>
+</div>
+</div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div id="registerModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden">
+<div class="p-8">
+<h2 class="text-3xl font-bold mb-8 text-center">Créer un compte</h2>
+<div class="space-y-6">
+<div><label class="block text-sm font-medium mb-2">Prénom</label><input id="prenom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+<div><label class="block text-sm font-medium mb-2">Nom</label><input id="nom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+<div><label class="block text-sm font-medium mb-2">Adresse email</label><input id="email" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+<div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="password" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+</div>
+<button onclick="createAccount()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Créer mon compte</button>
+<p onclick="closeRegisterModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
+</div>
+</div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden">
+<div class="p-8">
+<h2 class="text-3xl font-bold mb-8 text-center">Se connecter</h2>
+<div class="space-y-6">
+<div><label class="block text-sm font-medium mb-2">Adresse email</label><input id="loginEmail" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+<div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="loginPassword" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+</div>
+<button onclick="login()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Se connecter</button>
+<p onclick="closeLoginModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
+</div>
+</div>
 </div>
 
 <script>
+let cart = [];
+let currentUser = null;
+
+function showProductDetail() {
+  document.getElementById('sizeSelect').value = "";
+  document.getElementById('colorSelect').value = "";
+  document.getElementById('productModal').classList.remove('hidden');
+  document.getElementById('productModal').classList.add('flex');
+}
+function closeProductModal() {
+  document.getElementById('productModal').classList.add('hidden');
+  document.getElementById('productModal').classList.remove('flex');
+}
+function changeImage(thumb) {
+  document.getElementById('mainImage').src = thumb.src;
+}
+
+function addToCartFromModal() {
+  const size = document.getElementById('sizeSelect').value;
+  const color = document.getElementById('colorSelect').value;
+  if (!size || !color) {
+    alert("❌ Veuillez choisir une taille et une couleur");
+    return;
+  }
+  cart.push({name: "Ensemble élégant femme", price: 29.99, size: size, color: color});
+  document.getElementById('cart-count').textContent = cart.length;
+  alert(`✅ Ajouté au panier !\nTaille: ${size} | Couleur: ${color}`);
+  closeProductModal();
+}
+
 function showRegisterModal() {
   document.getElementById('registerModal').classList.remove('hidden');
   document.getElementById('registerModal').classList.add('flex');
 }
-
 function closeRegisterModal() {
   document.getElementById('registerModal').classList.add('hidden');
   document.getElementById('registerModal').classList.remove('flex');
 }
 
 function createAccount() {
-  const prenom = document.getElementById('prenom').value.trim();
-  const nom = document.getElementById('nom').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
-
-  if (!prenom || !nom || !email || !password) {
-    alert("❌ Veuillez remplir tous les champs");
+  if (!email || !password) {
+    alert("Veuillez remplir tous les champs");
     return;
   }
-
-  alert(`✅ Compte créé avec succès !\n\nBienvenue ${prenom} ${nom} !\nEmail : ${email}`);
+  localStorage.setItem('flipvibe_user', JSON.stringify({email, password}));
+  alert("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
   closeRegisterModal();
-  
-  // Réinitialiser le formulaire
-  document.getElementById('prenom').value = '';
-  document.getElementById('nom').value = '';
-  document.getElementById('email').value = '';
-  document.getElementById('password').value = '';
 }
 
-// Le reste du script (modal article, etc.) reste disponible
-function showProductDetail(){alert("Modal article ouvert (fonctionnalité complète disponible)");}
+function showLoginModal() {
+  document.getElementById('loginModal').classList.remove('hidden');
+  document.getElementById('loginModal').classList.add('flex');
+}
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.add('hidden');
+  document.getElementById('loginModal').classList.remove('flex');
+}
+
+function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const savedUser = JSON.parse(localStorage.getItem('flipvibe_user'));
+  if (savedUser && savedUser.email === email && savedUser.password === password) {
+    currentUser = savedUser;
+    alert("✅ Connexion réussie ! Bienvenue " + email);
+    closeLoginModal();
+  } else {
+    alert("❌ Email ou mot de passe incorrect");
+  }
+}
+
+document.getElementById('productModal').addEventListener('click', function(e) {
+  if (e.target === this) closeProductModal();
+});
 </script>
 </body>
 </html>
