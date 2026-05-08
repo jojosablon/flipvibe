@@ -9,7 +9,6 @@
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
 .product-card{transition:all .4s cubic-bezier(0.4,0,0.2,1)}
 .product-card:hover{transform:translateY(-8px);box-shadow:0 25px 50px -12px rgb(0 0 0 / 0.15)}
-.modal{animation:fadeIn .3s ease-out}
 .thumbnail{transition:all .2s}
 .thumbnail:hover{transform:scale(1.15);border-color:#10b981}
 </style>
@@ -20,8 +19,8 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
 <h1 class="text-3xl font-bold tracking-tighter text-emerald-600">FLIPVIBE</h1>
 <nav class="flex gap-8 text-lg font-medium">
-<a href="#" class="hover:text-emerald-600">Accueil</a>
-<a href="#produits" class="hover:text-emerald-600">Boutique</a>
+<a href="#" onclick="showShop()" class="hover:text-emerald-600">Accueil</a>
+<a href="#" onclick="showShop()" class="hover:text-emerald-600">Boutique</a>
 </nav>
 
 <div class="flex items-center gap-6">
@@ -30,6 +29,18 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 </div>
 </div>
 </header>
+
+<!-- SHOP PAGE -->
+<div id="shopPage">
+<section class="py-20 bg-gradient-to-br from-slate-100 to-emerald-50">
+<div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="text-6xl font-bold leading-none mb-6">Seconde main<br>qui claque</h2>
+<p class="text-2xl text-slate-600 mb-8">Des pièces sélectionnées avec soin.<br>Qualité premium à prix juste.</p>
+</div>
+<div><img src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" class="rounded-3xl shadow-2xl" alt="Ensemble"></div>
+</div>
+</section>
 
 <section id="produits" class="py-20 max-w-7xl mx-auto px-8">
 <h2 class="text-4xl font-bold mb-12 text-center">Nos articles en vente</h2>
@@ -44,6 +55,45 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 </div>
 </div>
 </section>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="hidden py-20">
+<div class="max-w-md mx-auto bg-white rounded-3xl p-10 shadow-xl">
+<h2 class="text-4xl font-bold text-center mb-10">Se connecter</h2>
+<div class="space-y-8">
+<div>
+<label class="block text-sm font-medium mb-2">Email</label>
+<input id="loginEmail" type="email" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg">
+</div>
+<div>
+<label class="block text-sm font-medium mb-2">Mot de passe</label>
+<input id="loginPassword" type="password" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg">
+</div>
+<button onclick="login()" class="w-full py-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl text-xl font-semibold">Se connecter</button>
+</div>
+<div class="text-center mt-8">
+<button onclick="showShop()" class="text-slate-500 hover:text-emerald-600">← Retour à la boutique</button>
+</div>
+</div>
+</div>
+
+<!-- REGISTER PAGE -->
+<div id="registerPage" class="hidden py-20">
+<div class="max-w-md mx-auto bg-white rounded-3xl p-10 shadow-xl">
+<h2 class="text-4xl font-bold text-center mb-10">Créer un compte</h2>
+<div class="space-y-8">
+<div><label class="block text-sm font-medium mb-2">Prénom</label><input id="prenom" type="text" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg"></div>
+<div><label class="block text-sm font-medium mb-2">Nom</label><input id="nom" type="text" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg"></div>
+<div><label class="block text-sm font-medium mb-2">Email</label><input id="email" type="email" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg"></div>
+<div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="password" type="password" class="w-full px-6 py-5 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500 text-lg"></div>
+<button onclick="createAccount()" class="w-full py-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-3xl text-xl font-semibold">Créer mon compte</button>
+</div>
+<div class="text-center mt-8">
+<button onclick="showShop()" class="text-slate-500 hover:text-emerald-600">← Retour à la boutique</button>
+</div>
+</div>
+</div>
 
 <!-- PRODUCT MODAL -->
 <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
@@ -99,29 +149,71 @@ Ajouter au panier
 </div>
 </div>
 
-<!-- Auth Modal -->
-<div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden" id="authContent"></div>
-</div>
-
 <script>
 let currentUser = null;
 let cart = [];
 
-// Mise à jour du header
+// Mise à jour header
 function updateHeader() {
   const container = document.getElementById('headerButtons');
   if (currentUser) {
     container.innerHTML = `<button onclick="showAccountModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">👤 Mon compte</button>`;
   } else {
     container.innerHTML = `
-      <button onclick="showLoginModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
-      <button onclick="showRegisterModal()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
+      <button onclick="showLoginPage()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
+      <button onclick="showRegisterPage()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
     `;
   }
 }
 
-// Modal Article
+// Afficher les pages
+function showShop() {
+  document.getElementById('shopPage').classList.remove('hidden');
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('registerPage').classList.add('hidden');
+}
+
+function showLoginPage() {
+  document.getElementById('shopPage').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('registerPage').classList.add('hidden');
+}
+
+function showRegisterPage() {
+  document.getElementById('shopPage').classList.add('hidden');
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('registerPage').classList.remove('hidden');
+}
+
+// Login / Register / Account (simplifié)
+function createAccount() {
+  const prenom = document.getElementById('prenom').value.trim();
+  const nom = document.getElementById('nom').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (!prenom || !nom || !email || !password) return alert("Veuillez remplir tous les champs");
+  currentUser = {prenom, nom, email, password};
+  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
+  alert("Compte créé avec succès !");
+  showShop();
+  updateHeader();
+}
+
+function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const saved = JSON.parse(localStorage.getItem('flipvibe_user'));
+  if (saved && saved.email === email && saved.password === password) {
+    currentUser = saved;
+    alert("✅ Connexion réussie !");
+    showShop();
+    updateHeader();
+  } else {
+    alert("❌ Email ou mot de passe incorrect");
+  }
+}
+
+// Product modal
 function showProductDetail() {
   document.getElementById('sizeSelect').value = "";
   document.getElementById('colorSelect').value = "";
@@ -138,84 +230,11 @@ function changeImage(thumb) {
 function addToCartFromModal() {
   const size = document.getElementById('sizeSelect').value;
   const color = document.getElementById('colorSelect').value;
-  if (!size || !color) {
-    alert("❌ Veuillez choisir une taille et une couleur");
-    return;
-  }
+  if (!size || !color) return alert("❌ Veuillez choisir une taille et une couleur");
   cart.push({name: "Ensemble élégant femme", price: 29.99, size: size, color: color});
   document.getElementById('cart-count').textContent = cart.length;
   alert(`✅ Ajouté au panier !\nTaille: ${size} | Couleur: ${color}`);
   closeProductModal();
-}
-
-// Authentification
-function showLoginModal() {
-  const html = `<div class="p-8"><h2 class="text-3xl font-bold mb-8 text-center">Se connecter</h2><div class="space-y-6"><div><label class="block text-sm font-medium mb-2">Email</label><input id="loginEmail" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="loginPassword" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div></div><button onclick="login()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Se connecter</button><p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p></div>`;
-  document.getElementById('authContent').innerHTML = html;
-  document.getElementById('authModal').classList.remove('hidden');
-  document.getElementById('authModal').classList.add('flex');
-}
-
-function showRegisterModal() {
-  const html = `<div class="p-8"><h2 class="text-3xl font-bold mb-8 text-center">Créer un compte</h2><div class="space-y-6"><div><label class="block text-sm font-medium mb-2">Prénom</label><input id="prenom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Nom</label><input id="nom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Email</label><input id="email" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="password" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div></div><button onclick="createAccount()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Créer mon compte</button><p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p></div>`;
-  document.getElementById('authContent').innerHTML = html;
-  document.getElementById('authModal').classList.remove('hidden');
-  document.getElementById('authModal').classList.add('flex');
-}
-
-function closeAuthModal() {
-  document.getElementById('authModal').classList.add('hidden');
-  document.getElementById('authModal').classList.remove('flex');
-}
-
-function createAccount() {
-  const prenom = document.getElementById('prenom').value.trim();
-  const nom = document.getElementById('nom').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  if (!prenom || !nom || !email || !password) return alert("Veuillez remplir tous les champs");
-  currentUser = {prenom, nom, email, password};
-  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
-  alert("Compte créé avec succès !");
-  closeAuthModal();
-  updateHeader();
-}
-
-function login() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
-  const saved = JSON.parse(localStorage.getItem('flipvibe_user'));
-  if (saved && saved.email === email && saved.password === password) {
-    currentUser = saved;
-    alert("✅ Connexion réussie !");
-    closeAuthModal();
-    updateHeader();
-  } else {
-    alert("❌ Email ou mot de passe incorrect");
-  }
-}
-
-function showAccountModal() {
-  const html = `<div class="p-8"><h2 class="text-3xl font-bold mb-8 text-center">Mon compte</h2><div class="space-y-6"><div><label class="block text-sm font-medium mb-2">Prénom</label><input id="editPrenom" value="${currentUser.prenom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Nom</label><input id="editNom" value="${currentUser.nom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div><div><label class="block text-sm font-medium mb-2">Email</label><input id="editEmail" value="${currentUser.email}" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div></div><button onclick="saveAccountChanges()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Enregistrer les modifications</button><button onclick="logout()" class="w-full mt-4 text-red-500 py-4">Se déconnecter</button><p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Fermer</p></div>`;
-  document.getElementById('authContent').innerHTML = html;
-  document.getElementById('authModal').classList.remove('hidden');
-  document.getElementById('authModal').classList.add('flex');
-}
-
-function saveAccountChanges() {
-  currentUser.prenom = document.getElementById('editPrenom').value;
-  currentUser.nom = document.getElementById('editNom').value;
-  currentUser.email = document.getElementById('editEmail').value;
-  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
-  alert("✅ Modifications enregistrées");
-  closeAuthModal();
-}
-
-function logout() {
-  currentUser = null;
-  localStorage.removeItem('flipvibe_user');
-  closeAuthModal();
-  updateHeader();
 }
 
 function showCart() {
