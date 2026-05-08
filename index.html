@@ -24,13 +24,10 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <a href="#produits" class="hover:text-emerald-600">Boutique</a>
 </nav>
 
-<div id="headerButtons" class="flex items-center gap-4">
-  <!-- Buttons will be updated by JavaScript -->
-</div>
+<div id="headerButtons" class="flex items-center gap-4"></div>
 </div>
 </header>
 
-<!-- PRODUCT CARD -->
 <section id="produits" class="py-20 max-w-7xl mx-auto px-8">
 <h2 class="text-4xl font-bold mb-12 text-center">Nos articles en vente</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -99,80 +96,26 @@ Ajouter au panier
 </div>
 </div>
 
-<!-- LOGIN / REGISTER / ACCOUNT MODALS -->
+<!-- Auth Modal -->
 <div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden" id="authContent">
-<!-- Dynamic content loaded by JS -->
-</div>
+<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden" id="authContent"></div>
 </div>
 
 <script>
 let currentUser = null;
 
-// Update header based on login status
 function updateHeader() {
-  const headerButtons = document.getElementById('headerButtons');
+  const container = document.getElementById('headerButtons');
   if (currentUser) {
-    headerButtons.innerHTML = `
-      <button onclick="showAccountModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl flex items-center gap-2">
-        👤 Mon compte
-      </button>
-    `;
+    container.innerHTML = `<button onclick="showAccountModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl flex items-center gap-2">👤 Mon compte</button>`;
   } else {
-    headerButtons.innerHTML = `
+    container.innerHTML = `
       <button onclick="showLoginModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
       <button onclick="showRegisterModal()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
     `;
   }
 }
 
-// Show account modal (when logged in)
-function showAccountModal() {
-  const html = `
-    <div class="p-8">
-      <h2 class="text-3xl font-bold mb-8 text-center">Mon compte</h2>
-      <div class="space-y-6">
-        <div>
-          <label class="block text-sm font-medium mb-2">Prénom</label>
-          <input id="editPrenom" value="${currentUser.prenom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-2">Nom</label>
-          <input id="editNom" value="${currentUser.nom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-2">Email</label>
-          <input id="editEmail" value="${currentUser.email}" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
-        </div>
-      </div>
-      <button onclick="saveAccountChanges()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Enregistrer les modifications</button>
-      <button onclick="logout()" class="w-full mt-4 text-red-500 py-4">Se déconnecter</button>
-      <p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Fermer</p>
-    </div>`;
-  document.getElementById('authContent').innerHTML = html;
-  document.getElementById('authModal').classList.remove('hidden');
-  document.getElementById('authModal').classList.add('flex');
-}
-
-// Save changes
-function saveAccountChanges() {
-  currentUser.prenom = document.getElementById('editPrenom').value;
-  currentUser.nom = document.getElementById('editNom').value;
-  currentUser.email = document.getElementById('editEmail').value;
-  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
-  alert("✅ Modifications enregistrées !");
-  closeAuthModal();
-}
-
-function logout() {
-  currentUser = null;
-  localStorage.removeItem('flipvibe_user');
-  closeAuthModal();
-  updateHeader();
-  alert("Vous avez été déconnecté.");
-}
-
-// Login & Register (simplified)
 function showLoginModal() {
   const html = `
     <div class="p-8">
@@ -231,9 +174,9 @@ function createAccount() {
 function login() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
-  const savedUser = JSON.parse(localStorage.getItem('flipvibe_user'));
-  if (savedUser && savedUser.email === email && savedUser.password === password) {
-    currentUser = savedUser;
+  const saved = JSON.parse(localStorage.getItem('flipvibe_user'));
+  if (saved && saved.email === email && saved.password === password) {
+    currentUser = saved;
     alert("✅ Connexion réussie !");
     closeAuthModal();
     updateHeader();
@@ -242,13 +185,41 @@ function login() {
   }
 }
 
-function updateHeader() {
-  // Already handled in the header
-  // This function is called after login/register
-  location.reload(); // Simple way to refresh header
+function showAccountModal() {
+  const html = `
+    <div class="p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center">Mon compte</h2>
+      <div class="space-y-6">
+        <div><label class="block text-sm font-medium mb-2">Prénom</label><input id="editPrenom" value="${currentUser.prenom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Nom</label><input id="editNom" value="${currentUser.nom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Email</label><input id="editEmail" value="${currentUser.email}" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+      </div>
+      <button onclick="saveAccountChanges()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Enregistrer les modifications</button>
+      <button onclick="logout()" class="w-full mt-4 text-red-500 py-4">Se déconnecter</button>
+      <p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Fermer</p>
+    </div>`;
+  document.getElementById('authContent').innerHTML = html;
+  document.getElementById('authModal').classList.remove('hidden');
+  document.getElementById('authModal').classList.add('flex');
 }
 
-// Product modal functions
+function saveAccountChanges() {
+  currentUser.prenom = document.getElementById('editPrenom').value;
+  currentUser.nom = document.getElementById('editNom').value;
+  currentUser.email = document.getElementById('editEmail').value;
+  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
+  alert("✅ Modifications enregistrées");
+  closeAuthModal();
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('flipvibe_user');
+  closeAuthModal();
+  updateHeader();
+}
+
+// Product modal
 function showProductDetail() {
   document.getElementById('sizeSelect').value = "";
   document.getElementById('colorSelect').value = "";
@@ -277,7 +248,7 @@ document.getElementById('productModal').addEventListener('click', function(e) {
   if (e.target === this) closeProductModal();
 });
 
-// Init
+// Initialisation
 updateHeader();
 </script>
 </body>
