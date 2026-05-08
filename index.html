@@ -11,7 +11,7 @@
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15); }
     .modal { animation: fadeIn 0.3s ease-out; }
     .thumbnail { transition: all 0.2s; }
-    .thumbnail:hover { transform: scale(1.08); border-color: #10b981; }
+    .thumbnail:hover { transform: scale(1.1); border-color: #10b981; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -31,7 +31,7 @@
     </div>
   </header>
 
-  <!-- HERO + PRODUITS (identique) -->
+  <!-- HERO -->
   <section class="hero-bg py-20 bg-gradient-to-br from-slate-100 to-emerald-50">
     <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
       <div>
@@ -44,6 +44,7 @@
     </div>
   </section>
 
+  <!-- PRODUITS -->
   <section id="produits" class="py-20 max-w-7xl mx-auto px-8">
     <h2 class="text-4xl font-bold mb-12 text-center">Nos articles en vente</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -59,7 +60,7 @@
     </div>
   </section>
 
-  <!-- MODAL ARTICLE - NOUVEAU LAYOUT -->
+  <!-- MODAL ARTICLE - Petites images encore plus petites à droite -->
   <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
     <div class="bg-white max-w-6xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
       <div class="p-8 flex-1 overflow-auto">
@@ -68,31 +69,31 @@
           <button onclick="closeProductModal()" class="text-5xl text-slate-300 hover:text-slate-500">×</button>
         </div>
 
-        <div class="flex gap-10">
-          <!-- IMAGE PRINCIPALE (au centre, pas trop grande) -->
+        <div class="flex gap-8">
+          <!-- Image principale (centre) -->
           <div class="flex-1">
             <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
                  class="w-full max-h-[480px] object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
           </div>
 
-          <!-- PETITES PHOTOS À DROITE (beaucoup plus petites) -->
-          <div class="flex flex-col gap-4 w-28">
+          <!-- Miniatures encore plus petites à droite -->
+          <div class="flex flex-col gap-3 w-20">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-1.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-2.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" 
-                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
           </div>
         </div>
 
-        <!-- Choix couleur + prix + bouton -->
+        <!-- Choix couleur + prix -->
         <div class="mt-10 flex justify-between items-end">
           <div>
             <p class="font-medium text-slate-600 mb-3">Choisissez votre couleur :</p>
@@ -157,7 +158,6 @@
       document.getElementById('mainImage').src = thumb.src;
     }
 
-    // Fermeture en cliquant dehors
     document.getElementById('productModal').addEventListener('click', function(e) {
       if (e.target === this) closeProductModal();
     });
