@@ -11,7 +11,7 @@
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15); }
     .modal { animation: fadeIn 0.3s ease-out; }
     .thumbnail { transition: all 0.2s; }
-    .thumbnail:hover { transform: scale(1.1); border-color: #10b981; }
+    .thumbnail:hover { transform: scale(1.15); border-color: #10b981; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -60,40 +60,39 @@
     </div>
   </section>
 
-  <!-- MODAL ARTICLE - Petites images encore plus petites à droite -->
+  <!-- MODAL ARTICLE -->
   <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
-    <div class="bg-white max-w-6xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
+    <div class="bg-white max-w-6xl w-full mx-4 rounded-3xl overflow-hidden max-h- flex flex-col">
       <div class="p-8 flex-1 overflow-auto">
         <div class="flex justify-between items-start mb-6">
           <h2 class="text-4xl font-bold">Ensemble élégant femme</h2>
           <button onclick="closeProductModal()" class="text-5xl text-slate-300 hover:text-slate-500">×</button>
         </div>
 
-        <div class="flex gap-8">
-          <!-- Image principale (centre) -->
+        <div class="flex gap-10">
+          <!-- Image principale -->
           <div class="flex-1">
             <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
-                 class="w-full max-h-[480px] object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
+                 class="w-full max-h- object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
           </div>
 
-          <!-- Miniatures encore plus petites à droite -->
-          <div class="flex flex-col gap-3 w-20">
+          <!-- Miniatures très petites à droite -->
+          <div class="flex flex-col gap-2 w-16">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-1.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-2.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
             <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" 
-                 class="thumbnail w-20 h-20 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+                 class="thumbnail w-16 h-16 object-cover rounded-xl cursor-pointer border-2 border-transparent">
           </div>
         </div>
 
-        <!-- Choix couleur + prix -->
         <div class="mt-10 flex justify-between items-end">
           <div>
             <p class="font-medium text-slate-600 mb-3">Choisissez votre couleur :</p>
@@ -129,38 +128,4 @@
 
     function selectColor(btn, color) {
       document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
-      btn.classList.add('border-emerald-500', 'bg-emerald-50');
-      selectedColor = color;
-    }
-
-    function addToCartFromModal() {
-      if (!selectedColor) {
-        alert("❌ Veuillez choisir une couleur");
-        return;
-      }
-      alert("✅ Article ajouté au panier !");
-      closeProductModal();
-    }
-
-    function showProductDetail() {
-      selectedColor = null;
-      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
-      document.getElementById('productModal').classList.remove('hidden');
-      document.getElementById('productModal').classList.add('flex');
-    }
-
-    function closeProductModal() {
-      document.getElementById('productModal').classList.add('hidden');
-      document.getElementById('productModal').classList.remove('flex');
-    }
-
-    function changeImage(thumb) {
-      document.getElementById('mainImage').src = thumb.src;
-    }
-
-    document.getElementById('productModal').addEventListener('click', function(e) {
-      if (e.target === this) closeProductModal();
-    });
-  </script>
-</body>
-</html>
+      btn.classList.add('border-emerald-500', '
