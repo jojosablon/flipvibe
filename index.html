@@ -9,6 +9,7 @@
     body { font-family: 'Inter', system-ui, sans-serif; }
     .product-card { transition: all 0.3s; }
     .product-card:hover { transform: scale(1.05); }
+    .product-img { width: 100%; height: 256px; object-fit: cover; }
   </style>
 </head>
 <body class="bg-zinc-950 text-white">
@@ -36,25 +37,28 @@
     <h2 class="text-4xl font-bold mb-10 text-center">Articles en vente</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 
-      <!-- TENUE FEMME - NOUVELLE -->
+      <!-- TENUE FEMME AVEC VRAIE IMAGE -->
       <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
-        <div class="h-64 bg-zinc-800 flex items-center justify-center text-7xl">👗</div>
+        <img src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
+             class="product-img" alt="Ensemble élégant femme">
         <div class="p-6">
           <h3 class="font-semibold text-xl">Ensemble élégant femme - Haut + Pantalon large</h3>
           <p class="text-emerald-400 text-2xl mt-2">39,99 €</p>
-          <p class="text-zinc-400 text-sm mt-1">Disponible en S, M, L, XL, XXL - Neuf (Temu)</p>
-          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
+          <p class="text-zinc-400 text-sm mt-1">S, M, L, XL, XXL - Neuf (Temu)</p>
+          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" 
+                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
         </div>
       </div>
 
-      <!-- Exemple (tu pourras supprimer ou garder) -->
+      <!-- Tu peux garder ou supprimer cet exemple -->
       <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
         <div class="h-64 bg-zinc-800 flex items-center justify-center text-7xl">👕</div>
         <div class="p-6">
           <h3 class="font-semibold text-xl">Polo Ralph Lauren bleu marine</h3>
           <p class="text-emerald-400 text-2xl mt-2">35 €</p>
           <p class="text-zinc-400 text-sm mt-1">Taille M - Excellent état</p>
-          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
+          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" 
+                  class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
         </div>
       </div>
 
