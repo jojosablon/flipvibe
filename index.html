@@ -5,13 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlipVibe - Seconde Main Premium</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .product-card { transition: all 0.3s; }
+    .product-card:hover { transform: scale(1.05); }
+  </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center">
-  <div class="text-center">
-    <h1 class="text-6xl font-bold mb-4">FLIPVIBE</h1>
-    <p class="text-3xl text-emerald-400">Ton site est en ligne ! ✅</p>
-    <p class="mt-8 text-xl">Si tu vois cette page, c’est bon.</p>
-    <p class="text-zinc-400 mt-12">On va maintenant remettre la vraie version avec tes produits.</p>
-  </div>
+<body class="bg-zinc-950 text-white">
+
+  <header class="bg-black py-6 border-b border-zinc-800">
+    <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold tracking-tighter">FLIPVIBE</h1>
+      <nav class="flex gap-8 text-lg">
+        <a href="#" class="hover:text-emerald-400">Accueil</a>
+        <a href="#produits" class="hover:text-emerald-400">Boutique</a>
+        <a href="#contact" class="hover:text-emerald-400">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="py-24 bg-gradient-to-r from-zinc-900 to-black text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-6xl font-bold mb-4">Seconde main qui claque 🔥</h2>
+      <p class="text-2xl text-emerald-400 mb-8">Polos Ralph Lauren • Vestes Nike • Sneakers vintage<br>Pièces sélectionnées et flipées par moi</p>
+      <a href="#produits" class="inline-block bg-emerald-500 hover:bg-emerald-600 px-10 py-4 rounded-2xl text-xl font-semibold">Voir les articles →</a>
+    </div>
+  </section>
+
+  <section id="produits" class="py-16 max-w-6xl mx-auto px-6">
+    <h2 class="text-4xl font-bold mb-10 text-center">Articles en vente</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
+        <div class="h-64 bg-zinc-800 flex items-center justify-center text-7xl">👕</div>
+        <div class="p-6">
+          <h3 class="font-semibold text-xl">Polo Ralph Lauren bleu marine</h3>
+          <p class="text-emerald-400 text-2xl mt-2">35 €</p>
+          <p class="text-zinc-400 text-sm mt-1">Taille M - Excellent état</p>
+          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
+        </div>
+      </div>
+
+      <div class="product-card bg-zinc-900 rounded-3xl overflow-hidden">
+        <div class="h-64 bg-zinc-800 flex items-center justify-center text-7xl">🧥</div>
+        <div class="p-6">
+          <h3 class="font-semibold text-xl">Veste Nike vintage bleue</h3>
+          <p class="text-emerald-400 text-2xl mt-2">65 €</p>
+          <p class="text-zinc-400 text-sm mt-1">Taille L - Très bon état</p>
+          <button onclick="alert('Envoie-moi un message WhatsApp pour acheter !')" class="mt-6 w-full bg-white text-black py-3 rounded-2xl font-semibold">Acheter</button>
+        </div>
+      </div>
+
+      <!-- Tu peux ajouter d'autres cartes ici plus tard -->
+
+    </div>
+  </section>
+
+  <section id="contact" class="py-16 bg-black text-center">
+    <h2 class="text-4xl font-bold mb-8">Prêt à acheter ?</h2>
+    <p class="text-xl mb-8">Contacte-moi directement :</p>
+    <div class="flex justify-center gap-6">
+      <a href="https://wa.me/336XXXXXXXX" target="_blank" class="bg-green-500 px-8 py-4 rounded-2xl text-xl font-semibold flex items-center gap-3">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="https://instagram.com/tonpseudo" target="_blank" class="bg-pink-600 px-8 py-4 rounded-2xl text-xl font-semibold flex items-center gap-3">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+    </div>
+  </section>
+
+  <footer class="py-8 text-center text-zinc-500 text-sm">
+    © 2026 FlipVibe - Créé avec ❤️ par Grok
+  </footer>
+
 </body>
 </html>
