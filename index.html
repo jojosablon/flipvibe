@@ -23,9 +23,9 @@ body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sa
 <a href="#" class="hover:text-emerald-600">Accueil</a>
 <a href="#produits" class="hover:text-emerald-600">Boutique</a>
 </nav>
-<div class="flex items-center gap-4">
-<button onclick="showLoginModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
-<button onclick="showRegisterModal()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
+
+<div id="headerButtons" class="flex items-center gap-4">
+  <!-- Buttons will be updated by JavaScript -->
 </div>
 </div>
 </header>
@@ -99,42 +99,156 @@ Ajouter au panier
 </div>
 </div>
 
-<!-- REGISTER MODAL -->
-<div id="registerModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden">
-<div class="p-8">
-<h2 class="text-3xl font-bold mb-8 text-center">Créer un compte</h2>
-<div class="space-y-6">
-<div><label class="block text-sm font-medium mb-2">Prénom</label><input id="prenom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-<div><label class="block text-sm font-medium mb-2">Nom</label><input id="nom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-<div><label class="block text-sm font-medium mb-2">Adresse email</label><input id="email" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-<div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="password" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-</div>
-<button onclick="createAccount()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Créer mon compte</button>
-<p onclick="closeRegisterModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
-</div>
-</div>
-</div>
-
-<!-- LOGIN MODAL -->
-<div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden">
-<div class="p-8">
-<h2 class="text-3xl font-bold mb-8 text-center">Se connecter</h2>
-<div class="space-y-6">
-<div><label class="block text-sm font-medium mb-2">Adresse email</label><input id="loginEmail" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-<div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="loginPassword" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
-</div>
-<button onclick="login()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Se connecter</button>
-<p onclick="closeLoginModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
-</div>
+<!-- LOGIN / REGISTER / ACCOUNT MODALS -->
+<div id="authModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+<div class="bg-white max-w-md w-full mx-4 rounded-3xl overflow-hidden" id="authContent">
+<!-- Dynamic content loaded by JS -->
 </div>
 </div>
 
 <script>
-let cart = [];
 let currentUser = null;
 
+// Update header based on login status
+function updateHeader() {
+  const headerButtons = document.getElementById('headerButtons');
+  if (currentUser) {
+    headerButtons.innerHTML = `
+      <button onclick="showAccountModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl flex items-center gap-2">
+        👤 Mon compte
+      </button>
+    `;
+  } else {
+    headerButtons.innerHTML = `
+      <button onclick="showLoginModal()" class="px-6 py-2.5 font-medium text-emerald-600 hover:bg-emerald-50 rounded-3xl">Se connecter</button>
+      <button onclick="showRegisterModal()" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-3xl hover:bg-emerald-700">Créer un compte</button>
+    `;
+  }
+}
+
+// Show account modal (when logged in)
+function showAccountModal() {
+  const html = `
+    <div class="p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center">Mon compte</h2>
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium mb-2">Prénom</label>
+          <input id="editPrenom" value="${currentUser.prenom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Nom</label>
+          <input id="editNom" value="${currentUser.nom || ''}" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Email</label>
+          <input id="editEmail" value="${currentUser.email}" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500">
+        </div>
+      </div>
+      <button onclick="saveAccountChanges()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Enregistrer les modifications</button>
+      <button onclick="logout()" class="w-full mt-4 text-red-500 py-4">Se déconnecter</button>
+      <p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Fermer</p>
+    </div>`;
+  document.getElementById('authContent').innerHTML = html;
+  document.getElementById('authModal').classList.remove('hidden');
+  document.getElementById('authModal').classList.add('flex');
+}
+
+// Save changes
+function saveAccountChanges() {
+  currentUser.prenom = document.getElementById('editPrenom').value;
+  currentUser.nom = document.getElementById('editNom').value;
+  currentUser.email = document.getElementById('editEmail').value;
+  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
+  alert("✅ Modifications enregistrées !");
+  closeAuthModal();
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('flipvibe_user');
+  closeAuthModal();
+  updateHeader();
+  alert("Vous avez été déconnecté.");
+}
+
+// Login & Register (simplified)
+function showLoginModal() {
+  const html = `
+    <div class="p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center">Se connecter</h2>
+      <div class="space-y-6">
+        <div><label class="block text-sm font-medium mb-2">Email</label><input id="loginEmail" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="loginPassword" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+      </div>
+      <button onclick="login()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Se connecter</button>
+      <p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
+    </div>`;
+  document.getElementById('authContent').innerHTML = html;
+  document.getElementById('authModal').classList.remove('hidden');
+  document.getElementById('authModal').classList.add('flex');
+}
+
+function showRegisterModal() {
+  const html = `
+    <div class="p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center">Créer un compte</h2>
+      <div class="space-y-6">
+        <div><label class="block text-sm font-medium mb-2">Prénom</label><input id="prenom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Nom</label><input id="nom" type="text" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Email</label><input id="email" type="email" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+        <div><label class="block text-sm font-medium mb-2">Mot de passe</label><input id="password" type="password" class="w-full px-5 py-4 border border-slate-300 rounded-3xl focus:outline-none focus:border-emerald-500"></div>
+      </div>
+      <button onclick="createAccount()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-6 rounded-3xl text-xl font-semibold">Créer mon compte</button>
+      <p onclick="closeAuthModal()" class="text-center mt-6 text-slate-500 hover:text-slate-700 cursor-pointer">Annuler</p>
+    </div>`;
+  document.getElementById('authContent').innerHTML = html;
+  document.getElementById('authModal').classList.remove('hidden');
+  document.getElementById('authModal').classList.add('flex');
+}
+
+function closeAuthModal() {
+  document.getElementById('authModal').classList.add('hidden');
+  document.getElementById('authModal').classList.remove('flex');
+}
+
+function createAccount() {
+  const prenom = document.getElementById('prenom').value.trim();
+  const nom = document.getElementById('nom').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (!prenom || !nom || !email || !password) {
+    alert("Veuillez remplir tous les champs");
+    return;
+  }
+  currentUser = {prenom, nom, email, password};
+  localStorage.setItem('flipvibe_user', JSON.stringify(currentUser));
+  alert("Compte créé avec succès !");
+  closeAuthModal();
+  updateHeader();
+}
+
+function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const savedUser = JSON.parse(localStorage.getItem('flipvibe_user'));
+  if (savedUser && savedUser.email === email && savedUser.password === password) {
+    currentUser = savedUser;
+    alert("✅ Connexion réussie !");
+    closeAuthModal();
+    updateHeader();
+  } else {
+    alert("❌ Email ou mot de passe incorrect");
+  }
+}
+
+function updateHeader() {
+  // Already handled in the header
+  // This function is called after login/register
+  location.reload(); // Simple way to refresh header
+}
+
+// Product modal functions
 function showProductDetail() {
   document.getElementById('sizeSelect').value = "";
   document.getElementById('colorSelect').value = "";
@@ -148,7 +262,6 @@ function closeProductModal() {
 function changeImage(thumb) {
   document.getElementById('mainImage').src = thumb.src;
 }
-
 function addToCartFromModal() {
   const size = document.getElementById('sizeSelect').value;
   const color = document.getElementById('colorSelect').value;
@@ -156,58 +269,16 @@ function addToCartFromModal() {
     alert("❌ Veuillez choisir une taille et une couleur");
     return;
   }
-  cart.push({name: "Ensemble élégant femme", price: 29.99, size: size, color: color});
-  document.getElementById('cart-count').textContent = cart.length;
   alert(`✅ Ajouté au panier !\nTaille: ${size} | Couleur: ${color}`);
   closeProductModal();
-}
-
-function showRegisterModal() {
-  document.getElementById('registerModal').classList.remove('hidden');
-  document.getElementById('registerModal').classList.add('flex');
-}
-function closeRegisterModal() {
-  document.getElementById('registerModal').classList.add('hidden');
-  document.getElementById('registerModal').classList.remove('flex');
-}
-
-function createAccount() {
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  if (!email || !password) {
-    alert("Veuillez remplir tous les champs");
-    return;
-  }
-  localStorage.setItem('flipvibe_user', JSON.stringify({email, password}));
-  alert("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
-  closeRegisterModal();
-}
-
-function showLoginModal() {
-  document.getElementById('loginModal').classList.remove('hidden');
-  document.getElementById('loginModal').classList.add('flex');
-}
-function closeLoginModal() {
-  document.getElementById('loginModal').classList.add('hidden');
-  document.getElementById('loginModal').classList.remove('flex');
-}
-
-function login() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
-  const savedUser = JSON.parse(localStorage.getItem('flipvibe_user'));
-  if (savedUser && savedUser.email === email && savedUser.password === password) {
-    currentUser = savedUser;
-    alert("✅ Connexion réussie ! Bienvenue " + email);
-    closeLoginModal();
-  } else {
-    alert("❌ Email ou mot de passe incorrect");
-  }
 }
 
 document.getElementById('productModal').addEventListener('click', function(e) {
   if (e.target === this) closeProductModal();
 });
+
+// Init
+updateHeader();
 </script>
 </body>
 </html>
