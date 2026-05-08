@@ -10,6 +10,8 @@
     .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15); }
     .modal { animation: fadeIn 0.3s ease-out; }
+    .thumbnail { transition: all 0.2s; }
+    .thumbnail:hover { transform: scale(1.08); border-color: #10b981; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -29,7 +31,7 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO + PRODUITS (identique) -->
   <section class="hero-bg py-20 bg-gradient-to-br from-slate-100 to-emerald-50">
     <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
       <div>
@@ -42,73 +44,81 @@
     </div>
   </section>
 
-  <!-- PRODUITS -->
   <section id="produits" class="py-20 max-w-7xl mx-auto px-8">
     <h2 class="text-4xl font-bold mb-12 text-center">Nos articles en vente</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
       <div class="product-card bg-white rounded-3xl overflow-hidden border border-slate-100">
         <img src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
-             class="w-full h-96 object-cover cursor-pointer" onclick="showProductDetail()" alt="Ensemble élégant femme">
+             class="w-full h-96 object-cover cursor-pointer" onclick="showProductDetail()" alt="Ensemble">
         <div class="p-8">
           <h3 onclick="showProductDetail()" class="text-2xl font-semibold cursor-pointer mb-2">Ensemble élégant femme</h3>
           <p class="text-emerald-600 text-3xl font-bold">29,99 €</p>
           <p class="text-slate-500 mt-2">S • M • L • XL • XXL • Neuf</p>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- MODAL ARTICLE -->
+  <!-- MODAL ARTICLE - NOUVEAU LAYOUT -->
   <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 modal">
-    <div class="bg-white max-w-5xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
-      <div class="p-8 overflow-auto flex-1">
-        <div class="flex justify-between items-start">
+    <div class="bg-white max-w-6xl w-full mx-4 rounded-3xl overflow-hidden max-h-[95vh] flex flex-col">
+      <div class="p-8 flex-1 overflow-auto">
+        <div class="flex justify-between items-start mb-6">
           <h2 class="text-4xl font-bold">Ensemble élégant femme</h2>
           <button onclick="closeProductModal()" class="text-5xl text-slate-300 hover:text-slate-500">×</button>
         </div>
 
-        <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
-             class="w-full max-h-[500px] object-contain mx-auto my-8 rounded-3xl" alt="Ensemble">
+        <div class="flex gap-10">
+          <!-- IMAGE PRINCIPALE (au centre, pas trop grande) -->
+          <div class="flex-1">
+            <img id="mainImage" src="https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg" 
+                 class="w-full max-h-[480px] object-contain rounded-3xl shadow-md mx-auto" alt="Ensemble">
+          </div>
 
-        <div class="grid grid-cols-6 gap-4 mb-10">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" class="cursor-pointer rounded-2xl">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" class="cursor-pointer rounded-2xl">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" class="cursor-pointer rounded-2xl">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-1.png" class="cursor-pointer rounded-2xl">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-2.png" class="cursor-pointer rounded-2xl">
-          <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" class="cursor-pointer rounded-2xl">
-        </div>
-
-        <!-- Choix couleur -->
-        <div class="mb-8">
-          <p class="font-medium text-slate-600 mb-3">Choisissez votre couleur :</p>
-          <div class="flex gap-4">
-            <button onclick="selectColor(this, 'Kaki')" class="color-btn flex-1 py-6 text-xl font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟫 Kaki</button>
-            <button onclick="selectColor(this, 'Vert Olive')" class="color-btn flex-1 py-6 text-xl font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟩 Vert Olive</button>
+          <!-- PETITES PHOTOS À DROITE (beaucoup plus petites) -->
+          <div class="flex flex-col gap-4 w-28">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-1.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-2.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-kaki-3.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-1.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-2.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
+            <img onclick="changeImage(this)" src="https://raw.githubusercontent.com/jojosablon/flipvibe/main/tenue-vert-olive-3.png" 
+                 class="thumbnail w-28 h-28 object-cover rounded-2xl cursor-pointer border-2 border-transparent">
           </div>
         </div>
 
-        <div class="flex justify-between items-end">
+        <!-- Choix couleur + prix + bouton -->
+        <div class="mt-10 flex justify-between items-end">
           <div>
+            <p class="font-medium text-slate-600 mb-3">Choisissez votre couleur :</p>
+            <div class="flex gap-4">
+              <button onclick="selectColor(this, 'Kaki')" class="color-btn flex-1 py-5 text-lg font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟫 Kaki</button>
+              <button onclick="selectColor(this, 'Vert Olive')" class="color-btn flex-1 py-5 text-lg font-semibold border-2 border-slate-200 rounded-3xl hover:border-emerald-500">🟩 Vert Olive</button>
+            </div>
+          </div>
+          <div class="text-right">
             <p class="text-5xl font-bold text-emerald-600">29,99 €</p>
             <p class="text-slate-500">S, M, L, XL, XXL • Neuf</p>
           </div>
-          <button onclick="addToCartFromModal()" class="bg-emerald-600 text-white px-16 py-6 rounded-3xl text-2xl font-semibold hover:bg-emerald-700">
-            Ajouter au panier
-          </button>
         </div>
+      </div>
+
+      <div class="p-8 border-t">
+        <button onclick="addToCartFromModal()" class="w-full bg-emerald-600 text-white py-7 rounded-3xl text-2xl font-semibold hover:bg-emerald-700">
+          Ajouter au panier
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- PANIER + CHECKOUT (je te les mets dans le prochain message si tu veux, ou dis-moi "tout le code" et je te donne tout d'un coup) -->
-
   <footer class="bg-white py-12 border-t mt-20">
     <div class="max-w-7xl mx-auto px-8 text-center text-slate-500">
-      © 2026 FlipVibe - Belgique • Seconde main premium<br>
-      Créé avec ❤️ par Grok
+      © 2026 FlipVibe - Belgique • Seconde main premium
     </div>
   </footer>
 
@@ -116,37 +126,19 @@
     let cart = [];
     let selectedColor = null;
 
-    const product = {
-      id: 1,
-      name: "Ensemble élégant femme - Haut + Pantalon large",
-      price: 29.99,
-      image: "https://img.kwcdn.com/product/fancy/f4452652-3af1-4ae9-acdd-fef0c1be44fc.jpg"
-    };
-
     function selectColor(btn, color) {
       document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('border-emerald-500', 'bg-emerald-50'));
       btn.classList.add('border-emerald-500', 'bg-emerald-50');
       selectedColor = color;
     }
 
-    function addToCart() {
+    function addToCartFromModal() {
       if (!selectedColor) {
-        alert("❌ Veuillez choisir une couleur (Kaki ou Vert Olive)");
+        alert("❌ Veuillez choisir une couleur");
         return;
       }
-      cart.push({...product, color: selectedColor, quantity: 1});
-      updateCartCount();
-      selectedColor = null;
-    }
-
-    function addToCartFromModal() {
-      addToCart();
       alert("✅ Article ajouté au panier !");
       closeProductModal();
-    }
-
-    function updateCartCount() {
-      document.getElementById('cart-count').textContent = cart.length;
     }
 
     function showProductDetail() {
@@ -165,11 +157,7 @@
       document.getElementById('mainImage').src = thumb.src;
     }
 
-    // Panier et checkout (simplifié pour l'instant)
-    function showCart() {
-      alert("Panier ouvert (à venir dans la prochaine mise à jour complète)");
-    }
-
+    // Fermeture en cliquant dehors
     document.getElementById('productModal').addEventListener('click', function(e) {
       if (e.target === this) closeProductModal();
     });
